@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "正在兼职人类的工作",
 
 	// 站点 URL
-	site_url: "https://www.huomnh.me/",
+	site_url: "https://huomnh.github.io/",
 
 	// 站点描述
 	description:
