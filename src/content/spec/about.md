@@ -1,12 +1,13 @@
 # 关于我 / About Me
 
-你好！我是 **Huomnh** ，一个正在兼职人类的杂食。
+你好！我是 **Huomnh** ，一个正在兼职人类的杂食博主。
+
 
 ## 🛠️ 关于本站
 
+本站主要记录拆解测评、购买推荐、软件分享、网络技术、代码记录、AI消息、电子硬件、DIY等等，生活中遇到的所有事情。从原理到总结，我们一起探索。——见趣VisDream
 
-
-::github{repo="Huomnh"}
+::github{repo="Huomnh/huomnh.github.io"}
 
 
 ---

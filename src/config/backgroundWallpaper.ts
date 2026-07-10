@@ -81,17 +81,34 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否允许用户通过控制面板切换横幅标题显示
 			switchable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			title: "见趣 VisDream",
 			// 主页横幅主标题字体大小
 			titleSize: "3.8rem",
 			// 主页横幅副标题
 			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
+				"见世间趣味，赴心中愿景",
+				"以热爱，收藏生活所有细碎乐趣",
+				"目光所及皆是生活，心之所向尽是理想",
+				"捕捉日常微光，编织属于自己的视觉梦境",
+				"于平凡烟火，寻万千志趣",
+				"生活｜测评｜造物｜代码",
+        "记录兴趣，构筑视觉之梦",
+        "好物拆解・硬件 DIY・创作日常",
+        "用热爱记录每一段探索之路",
+        "多元爱好，自由造梦",
+        "热爱永不落幕",
+        "生活自有万千趣味",
+        "看见乐趣，奔赴幻梦",
+        "志趣为伴，向光而行",
+        "探索生活，造梦不止",
+        "以视野观生活，以热爱筑幻梦",
+        "用镜头、代码与手工，记录生活里的无限趣味",
+        "视觉为眼，热爱为梦，收集世间所有有趣",
+        "在日常拆解好物，在创作实现心中愿景",
+        "借多元爱好，看见生活藏起来的浪漫",
+        "看见兴趣，实现梦想",
+        "VisDream，见趣，见所爱，见所梦",
+        "VisDream  Huomnh",
 			],
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
@@ -111,7 +128,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 导航栏配置
 		navbar: {
 			// 导航栏透明模式："semi" 半透明，"full" 完全透明，"semifull" 动态透明
-			transparentMode: "semi",
+			transparentMode: "semifull",
 			// 是否开启毛玻璃模糊效果，开启可能会影响页面性能，如果不开启则是半透明，请根据自己的喜好开启
 			enableBlur: true,
 			// 毛玻璃模糊度
