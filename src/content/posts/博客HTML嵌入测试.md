@@ -1,8 +1,6 @@
 ---
 title: 嵌入HTML测试
 published: 2026-07-11 15:00:00
-description: 
-image: 
 tags: [博客,测试]
 category: 博客
 draft: false
