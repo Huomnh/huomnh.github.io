@@ -6,120 +6,112 @@ category: 博客
 draft: false
 ---
 
-## 一、普通Markdown基础内容
-这是常规文本，**加粗文字**、*斜体文字*，博客首页跳转链接：[https://www.huomnh.me](https://www.huomnh.me)
+## 🎆 萤火虫主题动效合集
 
-## 二、悬浮变色行内文字动效
-<span style="font-size:18px; font-weight:bold; color:#666; transition:color 0.4s ease;"
-onmouseover="this.style.color='#f97316'"
-onmouseout="this.style.color='#666'">
-鼠标放上来自动变色的文字
-</span>
+以下动效均使用原生 HTML + CSS，可直接嵌入 Firefly 的 Markdown 文章中。
 
-## 三、悬浮上浮阴影硬件信息卡片（核心动效）
+---
 
-<div style="background: #fff7ed; padding: 16px; border-radius: 12px; border-left: 4px solid #f97316; transition: all 0.3s ease; cursor: pointer;"
-onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 8px 20px rgba(249, 115, 22, 0.25)'"
-onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-  <h3 style="margin-top:0;color:#c2410c;">STM32F407 + ESP8266 接线关键提示</h3>
-  <p style="font-size:14px;line-height:1.7;">
-    1. 单片机与WiFi模块必须共地，否则串口数据乱码<br>
-    2. HX711称重模块仅支持3.3V供电，5V会造成读数漂移<br>
-    3. TB6612驱动输入电压区间4.5~15V，不要超压
-  </p>
-</div>
+### 1. 呼吸脉冲
 
-## 四、鼠标悬停高亮HTML表格
-<table border="1" cellpadding="6" cellspacing="0" width="100%" style="margin-top:16px;">
-  <tr style="background:#f0f0f0;">
-    <th>硬件模块</th>
-    <th>标准供电</th>
-    <th>通讯方式</th>
-  </tr>
-  <tr style="transition: background 0.25s ease;"
-  onmouseover="this.style.background='#ffedd5'"
-  onmouseout="this.style.background='transparent'">
-    <td>ESP8266-01S</td>
-    <td>3.3V</td>
-    <td>硬件串口</td>
-  </tr>
-  <tr style="transition: background 0.25s ease;"
-  onmouseover="this.style.background='#ffedd5'"
-  onmouseout="this.style.background='transparent'">
-    <td>HX711称重</td>
-    <td>3.3V</td>
-    <td>SPI类串行</td>
-  </tr>
-  <tr style="transition: background 0.25s ease;"
-  onmouseover="this.style.background='#ffedd5'"
-  onmouseout="this.style.background='transparent'">
-    <td>TB6612FNG电机驱动</td>
-    <td>4.5~15V</td>
-    <td>GIO控制</td>
-  </tr>
-  <tr style="transition: background 0.25s ease;"
-  onmouseover="this.style.background='#ffedd5'"
-  onmouseout="this.style.background='transparent'">
-    <td>OpenMV视觉模块</td>
-    <td>5V</td>
-    <td>串口/USB</td>
-  </tr>
-</table>
+&lt;div align="center" style="margin: 2rem 0;"&gt;
+  &lt;div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #ec4899); animation: firefly-pulse 2s ease-in-out infinite; box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);"&gt;&lt;/div&gt;
+&lt;/div&gt;
 
-## 五、两种动效提示框（成功+警告）
-<div style="margin-top:20px;background:#ecfccb;padding:12px;border-radius:8px;transition:all 0.3s;"
-onmouseover="this.style.boxShadow='0 4px 12px rgba(132, 204, 22, 0.2)'"
-onmouseout="this.style.boxShadow='none'">
-✅ 操作成功提示：md文件原生支持内联HTML过渡动效，无需修改文件后缀
-</div>
+---
 
-<div style="margin-top:12px;background:#fee2e2;padding:12px;border-radius:8px;transition:all 0.3s;"
-onmouseover="this.style.boxShadow='0 4px 12px rgba(248, 113, 113, 0.2)'"
-onmouseout="this.style.boxShadow='none'">
-⚠️ 重要注意：纯md文件不能写&lt;style&gt;关键帧循环动画，循环闪烁浮动请改用.mdx格式
-</div>
+### 2. 流光文字
 
-## 一、普通Markdown内容
-这是普通文字，**加粗**、*斜体*、[博客首页](https://www.huomnh.me)
+&lt;div align="center" style="margin: 2rem 0;"&gt;
+  &lt;h2 style="font-size: 2rem; font-weight: 800; background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #ec4899, #0ea5e9); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: firefly-flow 4s linear infinite;"&gt;
+    Firefly Theme ✨
+  &lt;/h2&gt;
+&lt;/div&gt;
 
-## 二、行内HTML（直接嵌在文字里，无需空行）
-普通文字 <span style="color:#ff6b6b;font-weight:bold;">红色加粗文字</span> 继续正常书写。
+---
 
-## 三、块级HTML（前后必须空一行，带自定义样式卡片）
+### 3. 悬浮卡片
 
-<div style="background: #fff7ed; padding: 16px; border-radius: 12px; border-left: 4px solid #f97316;">
-  <h3 style="margin-top:0;color:#c2410c;">硬件DIY小提示</h3>
-  <p style="font-size:14px;line-height:1.7;">
-    STM32F407搭配ESP8266接线时，记得共地，否则串口数据乱码。<br>
-    HX711称重模块供电建议3.3V，5V容易漂移。
-  </p>
-  <img src="/public/demo-hardware.jpg" width="100%" style="border-radius:6px;margin-top:8px;">
-</div>
+&lt;div align="center" style="margin: 2rem 0; perspective: 1000px;"&gt;
+  &lt;div style="width: 260px; height: 140px; background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700; box-shadow: 0 20px 40px rgba(0,0,0,0.15); animation: firefly-float 3s ease-in-out infinite;"&gt;
+    🚀 悬浮卡片
+  &lt;/div&gt;
+&lt;/div&gt;
 
-## 四、HTML表格
-<table border="1" cellpadding="6" cellspacing="0" width="100%">
-  <tr style="background:#f0f0f0;">
-    <th>模块</th>
-    <th>供电电压</th>
-    <th>通讯方式</th>
-  </tr>
-  <tr>
-    <td>ESP8266</td>
-    <td>3.3V</td>
-    <td>串口</td>
-  </tr>
-  <tr>
-    <td>TB6612</td>
-    <td>4.5~15V</td>
-    <td>GPIO</td>
-  </tr>
-</table>
+---
 
-## 五、彩色提示框
-<div style="background:#ecfccb;padding:12px;border-radius:8px;">
-✅ 成功提示：Astro md 文件原生支持HTML，无需额外转义
-</div>
+### 4. 旋转加载
 
-<div style="background:#fee2e2;padding:12px;border-radius:8px;">
-⚠️ 注意：不要用 ```html 代码块包裹HTML，否则只会展示源码不渲染
-</div>
+&lt;div align="center" style="margin: 2rem 0;"&gt;
+  &lt;div style="width: 48px; height: 48px; border: 4px solid #e5e7eb; border-top: 4px solid #3b82f6; border-radius: 50%; animation: firefly-spin 1s linear infinite;"&gt;&lt;/div&gt;
+  &lt;p style="margin-top: 12px; color: #6b7280; font-size: 0.875rem;"&gt;加载中...&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+### 5. 弹跳小球
+
+&lt;div align="center" style="margin: 2rem 0; height: 100px;"&gt;
+  &lt;div style="width: 32px; height: 32px; background: #ef4444; border-radius: 50%; animation: firefly-bounce 1.2s ease-in-out infinite;"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+### 6. 打字机效果
+
+&lt;div align="center" style="margin: 2rem 0;"&gt;
+  &lt;p style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 1.125rem; color: #374151; border-right: 2px solid #374151; white-space: nowrap; overflow: hidden; display: inline-block; animation: firefly-typing 3s steps(16) infinite, firefly-blink 0.8s step-end infinite;"&gt;
+    Hello, Firefly! 🌟
+  &lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+### 7. 萤火虫粒子（契合主题）
+
+&lt;div align="center" style="margin: 2rem 0; position: relative; width: 100%; height: 120px; overflow: hidden; border-radius: 12px; background: linear-gradient(to bottom, #0f172a, #1e293b);"&gt;
+  &lt;div style="position: absolute; width: 6px; height: 6px; background: #fbbf24; border-radius: 50%; box-shadow: 0 0 10px #fbbf24; top: 20%; left: 20%; animation: firefly-fly 4s ease-in-out infinite;"&gt;&lt;/div&gt;
+  &lt;div style="position: absolute; width: 4px; height: 4px; background: #a78bfa; border-radius: 50%; box-shadow: 0 0 8px #a78bfa; top: 60%; left: 50%; animation: firefly-fly 5s ease-in-out infinite 1s;"&gt;&lt;/div&gt;
+  &lt;div style="position: absolute; width: 5px; height: 5px; background: #34d399; border-radius: 50%; box-shadow: 0 0 10px #34d399; top: 40%; left: 80%; animation: firefly-fly 6s ease-in-out infinite 2s;"&gt;&lt;/div&gt;
+  &lt;div style="position: absolute; width: 3px; height: 3px; background: #f472b6; border-radius: 50%; box-shadow: 0 0 6px #f472b6; top: 70%; left: 30%; animation: firefly-fly 4.5s ease-in-out infinite 0.5s;"&gt;&lt;/div&gt;
+  &lt;p style="position: relative; z-index: 1; color: #e2e8f0; font-size: 1rem; line-height: 120px; text-align: center; font-weight: 600;"&gt;流萤飞舞 ✨&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+&lt;style&gt;
+@keyframes firefly-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+}
+@keyframes firefly-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+@keyframes firefly-float {
+  0%, 100% { transform: translateY(0) rotateX(0); }
+  50% { transform: translateY(-12px) rotateX(4deg); }
+}
+@keyframes firefly-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes firefly-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-35px); }
+}
+@keyframes firefly-typing {
+  0% { width: 0; }
+  50% { width: 180px; }
+  100% { width: 180px; }
+}
+@keyframes firefly-blink {
+  50% { border-color: transparent; }
+}
+@keyframes firefly-fly {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  25% { transform: translate(20px, -15px) scale(1.2); opacity: 1; }
+  50% { transform: translate(-10px, 10px) scale(0.8); opacity: 0.6; }
+  75% { transform: translate(15px, 5px) scale(1.1); opacity: 0.9; }
+}
+&lt;/style&gt;
