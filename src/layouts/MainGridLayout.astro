@@ -315,13 +315,15 @@ const hasMultipleImages =
 	(isOverlayMode && !isWallpaperSwitchable) ? 'wallpaper-overlay' : '',
 	(isFullscreenMode && !isWallpaperSwitchable) ? 'wallpaper-fullscreen' : '',
 ]} style={
-	isWallpaperSwitchable
+	// 非首页（移动端会隐藏 banner）初始即隐藏，避免壁纸闪现后再被 JS 隐藏
+	(isWallpaperSwitchable
 		? `top: -${BANNER_HEIGHT_EXTEND}vh; --overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;`
 		: isOverlayMode
 			? `--overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;`
 			: isFullscreenMode
 				? ``
-				: `top: -${BANNER_HEIGHT_EXTEND}vh`
+				: `top: -${BANNER_HEIGHT_EXTEND}vh`)
+	+ (isHomePageCheck ? "" : "; display: none;")
 }>
     <!-- 背景图片显示 -->
     {hasMultipleImages ? (
@@ -341,8 +343,8 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[640, 750, 1080]}
                     sizes="100vw"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : undefined}
+                    loading={index === 0 && isHomePageCheck ? "eager" : "lazy"}
+                    fetchpriority={index === 0 && isHomePageCheck ? "high" : undefined}
                     quality={mobileQuality}
                 />
             </div>
@@ -402,7 +404,7 @@ const hasMultipleImages =
 
     <!-- 壁纸轮播脚本（基于 CSS transition） -->
     {hasMultipleImages && (
-    <script is:inline data-swup-ignore-script>
+    <script is:inline data-swup-ignore-script define:vars={{ isHomeServerPage: isHomePageCheck }}>
         (function initBannerCarousel() {
             var container = document.getElementById('banner-images-container');
             if (!container) return;
@@ -617,7 +619,8 @@ const hasMultipleImages =
 
             // 随机首张
             var slides = getVisibleSlides();
-            if (slides.length > 1) {
+            // 移动端非首页壁纸默认隐藏，不执行随机换图，避免无谓下载与闪现
+            if (slides.length > 1 && (isHomeServerPage || window.innerWidth >= 1024)) {
                 // 首屏先显示 HTML 中 eager+high 的 slide（保证 LCP 图片可被发现且不懒加载），
                 // 等它完成首帧绘制后再随机切换到其他壁纸，兼顾“每次刷新随机一张”与性能
                 var firstSlide = slides[0];
@@ -647,7 +650,7 @@ const hasMultipleImages =
             }
 
             // 启动
-            if (isCarouselEnabled() && isBannerWallpaperMode()) {
+            if ((isHomeServerPage || window.innerWidth >= 1024) && isCarouselEnabled() && isBannerWallpaperMode()) {
                 startAutoPlay();
             }
         })();
