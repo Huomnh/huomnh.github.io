@@ -411,6 +411,11 @@ html.is-page-transitioning .banner-home-text-overlay {
     z-index: 10;
     pointer-events: auto;
 }
+/* 首屏壁纸可见性不依赖 JS 淡入：active 幻灯片内的图片加载后立即可见。
+   slide-item 自身的 opacity 过渡仍保留轮播切换效果 */
+.slide-item.active img {
+    opacity: 1 !important;
+}
 /* Performance: hidden slides are not rendered, so their images are not downloaded
    until they are actually shown by the carousel */
 .slide-item:not(.active) {

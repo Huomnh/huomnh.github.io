@@ -24,6 +24,7 @@ interface Props {
 	layout?: ResponsiveImageLayout;
 	formats?: ImageFormat[];
 	loading?: "lazy" | "eager";
+	fetchpriority?: "high" | "low" | "auto";
 	apiUrls?: string[];
 }
 
@@ -37,6 +38,7 @@ const {
 	layout = "constrained",
 	formats = getImageFormats(),
 	loading = "lazy",
+	fetchpriority = "auto",
 	apiUrls = [],
 } = Astro.props;
 
@@ -200,6 +202,7 @@ const remoteReferrerPolicy =
 			loading={loading}
 			formats={formats}
 			fallbackFormat={fallbackFormat}
+			fetchpriority={fetchpriority}
 			quality={quality}
 			layout={layout}
 			{...getPictureSizeProps(img)}
@@ -215,6 +218,7 @@ const remoteReferrerPolicy =
 			class={imageClass}
 			style={imageStyle}
 			loading={loading}
+			fetchpriority={fetchpriority}
 			decoding="async"
 			data-cover-img
 			data-remote="true"
@@ -285,6 +289,17 @@ const remoteReferrerPolicy =
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		/* 封面图淡入改为纯 CSS 动画，不再等待 JS 模块执行，避免 LCP 依赖脚本 */
+		animation: cover-image-fade-in 0.5s ease-out both;
+	}
+
+	@keyframes cover-image-fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 </style>
 

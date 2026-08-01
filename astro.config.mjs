@@ -84,6 +84,11 @@ export default defineConfig({
 
 	adapter,
 
+	// 性能优化：将页面样式内联到 HTML，消除渲染阻塞的外部 CSS 请求
+	build: {
+		inlineStylesheets: "always",
+	},
+
 	// 图像优化配置
 	image: {
 		// 全局响应式布局
@@ -323,4 +328,3 @@ export default defineConfig({
 		},
 	},
 });
-

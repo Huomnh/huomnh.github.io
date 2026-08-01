@@ -316,7 +316,7 @@ const hasMultipleImages =
 	(isFullscreenMode && !isWallpaperSwitchable) ? 'wallpaper-fullscreen' : '',
 ]} style={
 	isWallpaperSwitchable
-		? `top: -${BANNER_HEIGHT_EXTEND}vh; display: none; --overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;`
+		? `top: -${BANNER_HEIGHT_EXTEND}vh; --overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;`
 		: isOverlayMode
 			? `--overlay-opacity: ${backgroundWallpaper.overlay?.opacity ?? 0.8}; --overlay-z-index: ${backgroundWallpaper.overlay?.zIndex ?? -1}; --overlay-blur: ${backgroundWallpaper.overlay?.blur ?? 0}px;`
 			: isFullscreenMode
@@ -341,7 +341,8 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[640, 750, 1080]}
                     sizes="100vw"
-                    loading="lazy"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : undefined}
                     quality={mobileQuality}
                 />
             </div>
@@ -616,13 +617,32 @@ const hasMultipleImages =
             // 随机首张
             var slides = getVisibleSlides();
             if (slides.length > 1) {
-                var randomIdx = Math.floor(Math.random() * slides.length);
-                for (var k = 0; k < slides.length; k++) {
-                    if (k === randomIdx) slides[k].classList.add('active');
-                    else slides[k].classList.remove('active');
+                // 首屏先显示 HTML 中 eager+high 的 slide（保证 LCP 图片可被发现且不懒加载），
+                // 等它完成首帧绘制后再随机切换到其他壁纸，兼顾“每次刷新随机一张”与性能
+                var firstSlide = slides[0];
+                var firstImg = firstSlide ? firstSlide.querySelector('img') : null;
+                var swapped = false;
+                var swapToRandom = function() {
+                    if (transitioning) return;
+                    var idx = Math.floor(Math.random() * slides.length);
+                    changeToSlide(idx, false);
+                };
+                var scheduleSwap = function() {
+                    if (swapped) return;
+                    swapped = true;
+                    // 等首屏图片淡入完成后再切换，确保 LCP 记录在首屏图上
+                    setTimeout(swapToRandom, 800);
+                };
+                if (!firstImg) {
+                    scheduleSwap();
+                } else if (firstImg.complete && firstImg.naturalWidth > 0) {
+                    scheduleSwap();
+                } else {
+                    firstImg.addEventListener('load', scheduleSwap, { once: true });
+                    firstImg.addEventListener('error', scheduleSwap, { once: true });
+                    // 兜底：图片加载异常时最多等待 3 秒仍执行随机切换
+                    setTimeout(scheduleSwap, 3000);
                 }
-                // 提升随机选中的首屏壁纸加载优先级，避免 LCP 落在 lazy 图片上
-                prepareSlide(slides[randomIdx]);
             }
 
             // 启动
