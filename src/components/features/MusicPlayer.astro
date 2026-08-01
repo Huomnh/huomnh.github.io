@@ -349,9 +349,13 @@ const widgetId =
 
         // Reset cover rotation
         ui.cover.classList.remove('animate-spin-slow');
-        void ui.cover.offsetWidth;
-        ui.cover.classList.add('animate-spin-slow');
-        ui.cover.style.animationPlayState = 'paused';
+        // 下一帧重新添加类名以重启动画，避免强制重排
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                ui.cover.classList.add('animate-spin-slow');
+                ui.cover.style.animationPlayState = 'paused';
+            });
+        });
 
         // Reset progress
         ui.progressBar.style.width = '0%';

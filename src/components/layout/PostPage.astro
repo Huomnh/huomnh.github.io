@@ -83,9 +83,12 @@ const initialLayoutClass =
           container.classList.add('list-mode', 'flex', 'flex-col', 'gap-4', 'md:gap-4');
         }
 
-        // 强制重排后恢复过渡动画
-        container.offsetHeight;
-        container.style.transition = '';
+        // 下一帧恢复过渡动画，避免强制重排
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            container.style.transition = '';
+          });
+        });
       }
     }
   })();
@@ -229,26 +232,28 @@ const initialLayoutClass =
 
     const colHeights = new Array(colCount).fill(0);
 
+    // 先批量写入宽度，再一次性读取高度，避免写-读交替导致多次强制重排
     items.forEach((item) => {
-      // 找到最短的列放置
-      const colIndex = colHeights.indexOf(Math.min(...colHeights));
-
       // @ts-ignore
       item.style.position = "absolute";
       // @ts-ignore
       item.style.width = `${itemWidth}px`;
       // @ts-ignore
       item.style.setProperty('height', 'auto', 'important');
+    });
 
-      // 获取高度，优先使用 offsetHeight 避免 transform 影响
-      // @ts-ignore
-      const height = item.offsetHeight;
+    // 获取高度，优先使用 offsetHeight 避免 transform 影响
+    // @ts-ignore
+    const heights = items.map((item) => item.offsetHeight);
 
-      const top = colHeights[colIndex];
+    items.forEach((item, index) => {
+      // 找到最短的列放置
+      const colIndex = colHeights.indexOf(Math.min(...colHeights));
+      const height = heights[index];
       const left = colIndex * (itemWidth + gap);
 
       // @ts-ignore
-      item.style.top = `${top}px`;
+      item.style.top = `${colHeights[colIndex]}px`;
       // @ts-ignore
       item.style.left = `${left}px`;
 

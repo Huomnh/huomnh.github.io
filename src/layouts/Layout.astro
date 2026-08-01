@@ -1040,9 +1040,12 @@ function disableAnimation() {
       const progressBar = document.getElementById("progress-bar");
       if (progressBar) {
         progressBar.classList.remove("finishing", "done");
-        // Force reflow so the animation restarts cleanly
-        void progressBar.offsetWidth;
-        progressBar.classList.add("loading");
+        // 下一帧重新添加类名以重启动画，避免强制重排
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            progressBar.classList.add("loading");
+          });
+        });
       }
 
       // change banner height immediately when a link is clicked
@@ -1063,10 +1066,13 @@ function disableAnimation() {
         bodyElement!.classList.remove("is-home");
       }
 
-      // 强制回流，确保 transform 立即生效，然后恢复过渡动画
+      // 下一帧恢复过渡动画，确保 transform 已生效，避免强制重排
       if (mainGrid) {
-        void mainGrid.offsetWidth;
-        mainGrid.style.removeProperty("transition");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            mainGrid.style.removeProperty("transition");
+          });
+        });
       }
 
       // 同步壁纸模式的 body 类（防止 enable-banner 从初始加载残留到全屏/overlay/none 模式）

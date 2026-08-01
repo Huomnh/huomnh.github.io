@@ -729,9 +729,12 @@ function adjustMainContentPosition(
 				bannerGrid.style.transform = "";
 				bannerGrid.style.transition = "";
 			}
-			// 所有定位操作完成后，强制回流并恢复 CSS transition
-			void mainContent.offsetWidth;
-			mainContent.style.removeProperty("transition");
+			// 所有定位操作完成后，在下一帧恢复 CSS transition（避免强制回流）
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					mainContent.style.removeProperty("transition");
+				});
+			});
 			break;
 		}
 		case "fullscreen": {
@@ -760,19 +763,27 @@ function adjustMainContentPosition(
 				// absolute 定位下 margin-top 不影响布局，提前设好最终值避免切换 relative 时跳变
 				mainContent.style.setProperty("margin-top", "1rem", "important");
 				mainContent.classList.add("no-banner-layout");
-				void mainContent.offsetWidth;
-				mainContent.style.setProperty(
-					"transition",
-					"top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-					"important",
-				);
-				mainContent.style.setProperty("top", "100vh", "important");
+				// 下一帧再启动位移动画，避免强制回流
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						mainContent.style.setProperty(
+							"transition",
+							"top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+							"important",
+						);
+						mainContent.style.setProperty("top", "100vh", "important");
+					});
+				});
 				fullscreenAnimationTimeout = setTimeout(() => {
 					mainContent.style.transition = "none";
 					mainContent.style.position = "relative";
 					mainContent.style.setProperty("top", "0", "important");
-					void mainContent.offsetWidth;
-					mainContent.style.transition = "";
+					// 下一帧恢复 transition，避免强制回流
+					requestAnimationFrame(() => {
+						requestAnimationFrame(() => {
+							mainContent.style.transition = "";
+						});
+					});
 				}, 450);
 			} else {
 				// 初始化：直接设置位置，无需动画

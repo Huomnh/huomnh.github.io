@@ -530,9 +530,10 @@ const hasMultipleImages =
                         }, FADE_MS / 2);
                     } else {
                         // 其他效果：直接切换（CSS transition 处理）
-                        // 强制 reflow，确保过渡动画在 display:none -> block 后仍然生效
-                        void nextSlide.offsetHeight;
-                        applySlideChange(slides, nextIndex);
+                        // 下一帧再切换，让过渡动画自然生效，避免强制重排
+                        requestAnimationFrame(function() {
+                            applySlideChange(slides, nextIndex);
+                        });
                         setTimeout(function() {
                             transitioning = false;
                         }, FADE_MS);
