@@ -59,12 +59,12 @@ export const siteConfig: SiteConfig = {
 	// Favicon 配置
 	favicon: [
 		{
-			// 图标文件路径
-			src: "/favicon/VisDream-Logo.png",
-			// 可选，指定主题 'light' | 'dark'
-			// theme: "light",
-			// 可选，图标大小
-			// sizes: "32x32",
+			src: "/favicon/VisDream-Logo-32.png",
+			sizes: "32x32",
+		},
+		{
+			src: "/favicon/VisDream-Logo-192.png",
+			sizes: "192x192",
 		},
 	],
 

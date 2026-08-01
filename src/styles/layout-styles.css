@@ -411,6 +411,11 @@ html.is-page-transitioning .banner-home-text-overlay {
     z-index: 10;
     pointer-events: auto;
 }
+/* Performance: hidden slides are not rendered, so their images are not downloaded
+   until they are actually shown by the carousel */
+.slide-item:not(.active) {
+    display: none;
+}
 /* Fade 效果 */
 .effect-fade .slide-item {
     transition-property: opacity;

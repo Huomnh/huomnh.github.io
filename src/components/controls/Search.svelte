@@ -13,6 +13,7 @@ let keywordMobile = "";
 let result: SearchResult[] = [];
 let isSearching = false;
 let initialized = false;
+let pagefindLoading = false;
 let debounceTimer: NodeJS.Timeout;
 
 // --- Mocks for Dev Mode ---
@@ -64,7 +65,22 @@ const handleResultClick = (event: Event, url: string): void => {
 };
 
 // --- Core Search Logic ---
+const ensurePagefindLoaded = (): void => {
+	const windowWithLoader = window as unknown as {
+		__loadPagefind?: () => void;
+	};
+	if (
+		!window.pagefind &&
+		!pagefindLoading &&
+		typeof windowWithLoader.__loadPagefind === "function"
+	) {
+		pagefindLoading = true;
+		windowWithLoader.__loadPagefind();
+	}
+};
+
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
+	ensurePagefindLoaded();
 	if (!keyword) {
 		setPanelVisibility(false, isDesktop);
 		result = [];
@@ -240,4 +256,3 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
         overflow-y: auto;
     }
 </style>
-

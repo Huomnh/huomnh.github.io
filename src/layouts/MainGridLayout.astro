@@ -341,8 +341,7 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[640, 750, 1080]}
                     sizes="100vw"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : undefined}
+                    loading="lazy"
                     quality={mobileQuality}
                 />
             </div>
@@ -357,8 +356,7 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[1280, 1920, 2560]}
                     sizes="100vw"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : undefined}
+                    loading="lazy"
                     quality={configQuality}
                 />
             </div>
@@ -470,6 +468,24 @@ const hasMultipleImages =
                 return 0;
             }
 
+            // 性能优化：非当前 slide 默认为 display:none，浏览器不会下载其图片。
+            // 切换前先把目标 slide 显示出来并提升图片加载优先级，等图片就绪后再过渡。
+            function prepareSlide(slide) {
+                slide.style.display = 'block';
+                var img = slide.querySelector('img');
+                if (img) {
+                    if (img.getAttribute('loading') === 'lazy') {
+                        img.setAttribute('loading', 'eager');
+                    }
+                    img.setAttribute('fetchpriority', 'high');
+                }
+                if (!img || img.complete) return Promise.resolve();
+                return new Promise(function(resolve) {
+                    img.addEventListener('load', resolve, { once: true });
+                    img.addEventListener('error', resolve, { once: true });
+                });
+            }
+
             function applySlideChange(slides, nextIndex) {
                 // Slide 效果需要 prev-waiting 辅助类
                 if (effect === 'slide') {
@@ -496,27 +512,34 @@ const hasMultipleImages =
                 var currentIndex = getCurrentIndex(slides);
                 if (nextIndex === currentIndex) return;
 
-                if (effect === 'kenburns' && overlay) {
-                    // Ken Burns: 用下一张图的 LQIP 做桥接过渡
-                    transitioning = true;
-                    overlay.style.background = getSlideLqipStyle(slides[nextIndex]);
-                    overlay.style.opacity = '1';
-                    setTimeout(function() {
-                        applySlideChange(slides, nextIndex);
-                        // 等新图 Ken Burns 动画开始后再移除遮罩
+                transitioning = true;
+                var nextSlide = slides[nextIndex];
+                prepareSlide(nextSlide).then(function() {
+                    if (effect === 'kenburns' && overlay) {
+                        // Ken Burns: 用下一张图的 LQIP 做桥接过渡
+                        overlay.style.background = getSlideLqipStyle(nextSlide);
+                        overlay.style.opacity = '1';
                         setTimeout(function() {
-                            overlay.style.opacity = '0';
+                            applySlideChange(slides, nextIndex);
+                            // 等新图 Ken Burns 动画开始后再移除遮罩
+                            setTimeout(function() {
+                                overlay.style.opacity = '0';
+                                transitioning = false;
+                            }, 150);
+                        }, FADE_MS / 2);
+                    } else {
+                        // 其他效果：直接切换（CSS transition 处理）
+                        // 强制 reflow，确保过渡动画在 display:none -> block 后仍然生效
+                        void nextSlide.offsetHeight;
+                        applySlideChange(slides, nextIndex);
+                        setTimeout(function() {
                             transitioning = false;
-                        }, 150);
-                    }, FADE_MS / 2);
-                } else {
-                    // 其他效果：直接切换（CSS transition 处理）
-                    applySlideChange(slides, nextIndex);
-                }
-
-                if (resetProgress !== false && appState.isPlaying) {
-                    startAutoPlay();
-                }
+                        }, FADE_MS);
+                    }
+                    if (resetProgress !== false && appState.isPlaying) {
+                        startAutoPlay();
+                    }
+                });
             }
 
             var appState = {
@@ -598,6 +621,8 @@ const hasMultipleImages =
                     if (k === randomIdx) slides[k].classList.add('active');
                     else slides[k].classList.remove('active');
                 }
+                // 提升随机选中的首屏壁纸加载优先级，避免 LCP 落在 lazy 图片上
+                prepareSlide(slides[randomIdx]);
             }
 
             // 启动
@@ -933,4 +958,3 @@ const hasMultipleImages =
   }
 
 </style>
-
